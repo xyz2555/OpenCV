@@ -7,7 +7,7 @@ cv.imshow('Blank', blank)
 # blank[:] = 255,0,0   # Memberi warna biru penuh ke seluruh canvas
 # cv.imshow('Blue', blank)
 
-# blank[200:300, 300:400] = 255,0,0   # Memberi warna biru hanya pada area tertentu (kotak kecil)
+# blank[200:300, 300:400] = 255,0,0   # Memberi warna biru hanya pada area tertentu (kotak kecil)p
 # cv.imshow('Blue Block', blank)
 
 # cv.rectangle(blank, (0,0), (250,500), (0,255,0), thickness=-1)   # Membuat persegi panjang hijau (full filled) dari koordinat (0,0) ke (250,500)
