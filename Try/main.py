@@ -34,9 +34,34 @@ print(f'Median: {median}')
 # plt.show()
 
 gray_blur = cv.GaussianBlur(img_gray, (3, 3), 0)
-edges = cv.Canny(gray_blur, int(max(0, (1.0 - 0.37) * median)), int(min(255, (1.0 + 0.37) * median)))
-cv.imshow('blur', gray_blur)
-cv.imshow('canny', edges)
+# edges = cv.Canny(gray_blur, int(max(0, (1.0 - 0.37) * median)), int(min(255, (1.0 + 0.37) * median)))
+edges = cv.Canny(gray_blur, 0, 180)
+# cv.imshow('blur', gray_blur)
+# cv.imshow('canny', edges)
+
+kernel_dilate = cv.getStructuringElement(cv.MORPH_ELLIPSE, (5, 5))
+dilated = cv.dilate(edges, kernel_dilate, iterations=1)
+# cv.imshow('dilated', dilated)
+
+kernel_close = cv.getStructuringElement(cv.MORPH_ELLIPSE, (9, 9))
+closed = cv.morphologyEx(dilated, cv.MORPH_CLOSE, kernel_close)
+cv.imshow('closed', closed)
+
+contours,_ = cv.findContours(closed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+# cv.drawContours(img, contours, -1, (0, 255, 0), 2)
+# cv.imshow('hasil draw', img)
+
+# def classify(w, h, area):
+#     if h == 0:
+#         return 'Abaikan'
+
+for cnt in contours:
+    x, y, w, h = cv.boundingRect(cnt)
+    area = cv.contourArea(cnt)
+
+    if area > 50:
+        cv.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+cv.imshow('gambar', img)
 
 cv.waitKey(0)
 cv.destroyAllWindows()
