@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 img = cv.imread('../src/Photos/cats 2.jpg')
-img_gray = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
+img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
 median = np.median(img_gray)
 
@@ -52,6 +52,10 @@ eroded = cv.erode(closed, kernel, iterations=2)
 
 cv.imshow('eroded', eroded)
 
+kernel_dilate_2 = cv.getStructuringElement(cv.MORPH_ELLIPSE, (3,3))
+dilated = cv.dilate(eroded, kernel_dilate_2, iterations=2)
+cv.imshow('dilated', dilated)
+
 contours,_ = cv.findContours(eroded, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 # cv.drawContours(img, contours, -1, (0, 255, 0), 2)
 # cv.imshow('hasil draw', img)
@@ -66,6 +70,14 @@ for cnt in contours:
 
     if area > 2000:
         cv.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+        label = 'Kucing'
+        font = cv.FONT_HERSHEY_SIMPLEX
+        font_scale = 0.6
+        color = (0, 255, 0)
+        thicknes = 2
+
+        cv.putText(img, label, (x, y - 10), font, font_scale, color, thicknes)
 cv.imshow('gambar', img)
 
 cv.waitKey(0)
